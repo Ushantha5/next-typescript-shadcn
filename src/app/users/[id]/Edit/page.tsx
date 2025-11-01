@@ -1,7 +1,9 @@
+import UserEditView from "@/sections/user/user-new-edit-form";
+
 export default function UserEditPage() {
   return (
-    <div>
-      <h1>User Edit Page</h1>
+      <div>
+          <UserEditView/>
     </div>
   );
 }

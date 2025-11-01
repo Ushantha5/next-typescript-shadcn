@@ -1,7 +1,9 @@
+import UserListView from "@/sections/user/view/user-list-view";
+
 export default function UserListPage() {
   return (
     <div>
-      <h1>User List Viwe</h1>
+      <UserListView/>
     </div>
   );
 }
