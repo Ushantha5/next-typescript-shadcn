@@ -72,9 +72,7 @@ export const columns: ColumnDef<Payment>[] = [
   {
     accessorKey: "name",
     header: "Name",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("name")}</div>
-    ),
+    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
   {
     accessorKey: "email",
@@ -91,9 +89,75 @@ export const columns: ColumnDef<Payment>[] = [
     },
     cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
-  
+  {
+    accessorKey: "createdAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          CreatedAt
+          <ArrowUpDown />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("createdAt")}</div>
+    ),
+  },
+  {
+    accessorKey: "updatedAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          UpdatedAt
+          <ArrowUpDown />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("createdAt")}</div>
+    ),
+  },
+
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const payment = row.original;
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(payment.id)}
+            >
+              Created
+            </DropdownMenuItem>
+            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <DropdownMenuItem>
+              <button>Delete</button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
 ];
-  
+
 export default function UserListView() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -102,16 +166,16 @@ export default function UserListView() {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-   const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState([]);
 
-   React.useEffect(() => {
-     fetchUsers();
-   }, []);
+  React.useEffect(() => {
+    fetchUsers();
+  }, []);
 
-   const fetchUsers = async () => {
-     const users = await getUsers();
-     setData(users);
-   };
+  const fetchUsers = async () => {
+    const users = await getUsers();
+    setData(users);
+  };
   const table = useReactTable({
     data,
     columns,
